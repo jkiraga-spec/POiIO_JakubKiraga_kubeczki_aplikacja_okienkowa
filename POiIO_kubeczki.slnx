@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="POiIO_kubeczki/POiIO_kubeczki.vcxproj" />
+</Solution>
