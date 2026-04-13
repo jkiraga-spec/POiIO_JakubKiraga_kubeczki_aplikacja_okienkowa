@@ -121,15 +121,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainWin.cpp" />
+    <ClCompile Include="OAutorze.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainWin.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="OAutorze.h">
       <FileType>CppForm</FileType>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MainWin.resx">
       <DependentUpon>MainWin.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OAutorze.resx">
+      <DependentUpon>OAutorze.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
