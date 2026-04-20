@@ -122,6 +122,8 @@
   <ItemGroup>
     <ClCompile Include="MainWin.cpp" />
     <ClCompile Include="OAutorze.cpp" />
+    <ClCompile Include="TCup.cpp" />
+    <ClCompile Include="TSubstance.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainWin.h">
@@ -130,6 +132,8 @@
     <ClInclude Include="OAutorze.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="TCup.h" />
+    <ClInclude Include="TSubstance.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MainWin.resx">

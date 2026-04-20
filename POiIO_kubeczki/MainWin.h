@@ -1,5 +1,7 @@
 #pragma once
+#include <vector>
 #include "OAutorze.h"
+#include "TCup.h"
 
 namespace POiIOkubeczki {
 
@@ -211,6 +213,10 @@ namespace POiIOkubeczki {
 
 		}
 #pragma endregion
+	private: Void addTCup() {
+		TCup cup;
+		cups_pnt.push_back(&cup);
+	}
 	private: Void addCup() {
 		PictureBox^ pb = gcnew PictureBox();
 		pb->Size = Drawing::Size(199, 319);
@@ -287,6 +293,7 @@ private: System::Void oAutorzeToolStripMenuItem_Click(System::Object^ sender, Sy
 	autor_info->Show();
 }
 private: System::Void dodajKubekToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	addTCup();
 	addCup();
 	addLblCup();
 }
