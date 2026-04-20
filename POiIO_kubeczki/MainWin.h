@@ -198,6 +198,7 @@ namespace POiIOkubeczki {
 			this->MainMenuStrip = this->menuStrip1;
 			this->Name = L"MainWin";
 			this->Text = L"Program kubeczki";
+			this->Click += gcnew System::EventHandler(this, &MainWin::MainWin_Click);
 			this->menuStrip1->ResumeLayout(false);
 			this->menuStrip1->PerformLayout();
 			this->ResumeLayout(false);
@@ -228,10 +229,22 @@ namespace POiIOkubeczki {
 		lbl->Location = System::Drawing::Point(12 + (10 + 199) * lbl_cups->Count, 243);
 		lbl->Name = L"lblCup" + Convert::ToString(lbl_cups->Count);
 		lbl->Text = L"cup #" + Convert::ToString(lbl_cups->Count);
+		
+		lbl->Click += gcnew System::EventHandler(this, &MainWin::selectCup);
 
 		this->Controls->Add(lbl);
 		lbl_cups->Add(lbl);
 	}
+
+	private: Void cleanLblCup() {
+		for each(Label ^ lbl in lbl_cups)
+		{
+			lbl->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			lbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(238)));
+			lbl->ForeColor = System::Drawing::Color::FromArgb(0, 0, 0);
+		}
+		//cupID = -1;
+		}
 	private: System::Void menuStrip1_ItemClicked(System::Object^ sender, System::Windows::Forms::ToolStripItemClickedEventArgs^ e) {
 	}
 	private: System::Void zamknijToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -248,6 +261,17 @@ private: System::Void oAutorzeToolStripMenuItem_Click(System::Object^ sender, Sy
 private: System::Void dodajKubekToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	addCup();
 	addLblCup();
+}
+private: System::Void selectCup(System::Object^ sender, System::EventArgs^ e) {
+	cleanLblCup();
+	Label^ lbl = (Label^)sender;
+	lbl->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
+	lbl->Font = gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(238));
+	lbl->ForeColor = System::Drawing::Color::FromArgb(255, 0, 0);
+}
+
+private: System::Void MainWin_Click(System::Object^ sender, System::EventArgs^ e) {
+	cleanLblCup();
 }
 };
 }
