@@ -1,4 +1,5 @@
 #pragma once
+#include <msclr/marshal_cppstd.h>
 #include <vector>
 #include "OAutorze.h"
 #include "TCup.h"
@@ -362,6 +363,14 @@ namespace POiIOkubeczki {
 			subList->Items->Add(name_cli);
 		}
 	}
+	void add_substance_to_cup(int vol) {
+		String^ selected = subList->SelectedItem->ToString();
+		std::string name = msclr::interop::marshal_as<std::string>(selected);
+
+		TCup* cup_pnt = cups_pnt[cupID];
+		cup_pnt->add(name, vol);
+		show_cup_info();
+	}
 	private: System::Void menuStrip1_ItemClicked(System::Object^ sender, System::Windows::Forms::ToolStripItemClickedEventArgs^ e) {
 	}
 	private: System::Void zamknijToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -448,12 +457,19 @@ private: System::Void anuluj_Click(System::Object^ sender, System::EventArgs^ e)
 }
 private: System::Void wlej_Click(System::Object^ sender, System::EventArgs^ e) {
 	String^ text = subMl->Text;
+	int vol = 0;
 	try {
+		vol = Convert::ToInt32(text);
 		int num = Convert::ToInt32(text);
 		int index = subList->SelectedIndex;
 
 		if (index >= 0){
-			MessageBox::Show("Poprawne dane", "Program kalkulator", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			add_substance_to_cup(vol);
+
+			cleanLblCup();
+			add_substance_active = false;
+			menuStrip1->Enabled = true;
+			//MessageBox::Show("Poprawne dane", "Program kalkulator", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			cleanLblCup();
 			add_substance_active = false;
 			menuStrip1->Enabled = true;
