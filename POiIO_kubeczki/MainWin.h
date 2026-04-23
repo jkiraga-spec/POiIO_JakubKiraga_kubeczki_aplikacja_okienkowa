@@ -20,16 +20,14 @@ namespace POiIOkubeczki {
 	private:
 		Generic::List<PictureBox^>^ cups = gcnew Generic::List<PictureBox^>();
 		Generic::List<Label^>^ lbl_cups = gcnew Generic::List<Label^>();
+		int cupID = -1;
+		bool add_substance_active = false;
 	private: System::Windows::Forms::ComboBox^ subList;
 
 	private: System::Windows::Forms::Button^ wlej;
 	private: System::Windows::Forms::Button^ anuluj;
 	private: System::Windows::Forms::TextBox^ subMl;
 
-
-
-
-		   int cupID = -1;
 
 	public:
 		MainWin(void)
@@ -383,23 +381,29 @@ private: System::Void dodajKubekToolStripMenuItem_Click(System::Object^ sender, 
 	addLblCup();
 }
 private: System::Void selectCup(System::Object^ sender, System::EventArgs^ e) {
-	cleanLblCup();
-	Label^ lbl = (Label^)sender;
-	lbl->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
-	lbl->Font = gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(238));
-	lbl->ForeColor = System::Drawing::Color::FromArgb(255, 0, 0);
+	if (add_substance_active == false)
+	{
+		cleanLblCup();
+		Label^ lbl = (Label^)sender;
+		lbl->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
+		lbl->Font = gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(238));
+		lbl->ForeColor = System::Drawing::Color::FromArgb(255, 0, 0);
 
-	getCupID(lbl);
-	delCupMenuItem->Enabled = true;
-	delCupMenuItem->Text = L"Usuñ kubek #" + Convert::ToString(cupID);
-	addSubMenuItem->Enabled = true;
-	addSubMenuItem->Text = L"Dodaj substancje do kubka #" + Convert::ToString(cupID);
+		getCupID(lbl);
+		delCupMenuItem->Enabled = true;
+		delCupMenuItem->Text = L"Usuñ kubek #" + Convert::ToString(cupID);
+		addSubMenuItem->Enabled = true;
+		addSubMenuItem->Text = L"Dodaj substancje do kubka #" + Convert::ToString(cupID);
+		//cups[cupID]->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
+	}
 }
 
 private: System::Void MainWin_Click(System::Object^ sender, System::EventArgs^ e) {
-	cleanLblCup();
+	if (add_substance_active == false) cleanLblCup();
 }
 private: System::Void addSubMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	add_substance_active = true;
+	menuStrip1->Enabled = false;
 	fillSubList();
 	subList->Location = System::Drawing::Point(12 + (10 + 199) * cupID, 273);
 	subMl->Location = System::Drawing::Point(12 + (10 + 199) * cupID, 302);
@@ -439,6 +443,8 @@ private: System::Void subMl_KeyUp(System::Object^ sender, System::Windows::Forms
 }
 private: System::Void anuluj_Click(System::Object^ sender, System::EventArgs^ e) {
 	cleanLblCup();
+	add_substance_active = false;
+	menuStrip1->Enabled = true;
 }
 private: System::Void wlej_Click(System::Object^ sender, System::EventArgs^ e) {
 	String^ text = subMl->Text;
@@ -449,6 +455,8 @@ private: System::Void wlej_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (index >= 0){
 			MessageBox::Show("Poprawne dane", "Program kalkulator", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			cleanLblCup();
+			add_substance_active = false;
+			menuStrip1->Enabled = true;
 		}
 		else {
 			MessageBox::Show("Wybierz ciecz do dolania!", "Program kalkulator", MessageBoxButtons::OK, MessageBoxIcon::Error);
