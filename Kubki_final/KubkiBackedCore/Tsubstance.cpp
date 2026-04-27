@@ -1,3 +1,4 @@
+#include "pch.h"
 #include"TSubstance.h"
 using namespace std;
 

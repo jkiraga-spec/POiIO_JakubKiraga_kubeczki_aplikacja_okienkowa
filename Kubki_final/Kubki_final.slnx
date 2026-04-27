@@ -1,0 +1,10 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="KubkiBackedCore/KubkiBackedCore.vcxproj" Id="f2c7ca7a-65d9-4d11-947d-12e840dee987" />
+  <Project Path="KubkiConsole/KubkiConsole.vcxproj" Id="81d659ea-44e2-4173-9865-18678febfff1">
+    <BuildDependency Project="KubkiBackedCore/KubkiBackedCore.vcxproj" />
+  </Project>
+</Solution>
