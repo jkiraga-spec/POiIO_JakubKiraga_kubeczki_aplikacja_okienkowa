@@ -282,8 +282,8 @@ namespace POiIOkubeczki {
 		}
 #pragma endregion
 	private: Void addTCup() {
-		TCup cup;
-		cups_pnt.push_back(&cup);
+		TCup* cup = new TCup();
+		cups_pnt.push_back(cup);
 	}
 	private: Void addCup() {
 		PictureBox^ pb = gcnew PictureBox();
@@ -371,6 +371,14 @@ namespace POiIOkubeczki {
 		cup_pnt->add(name, vol);
 		show_cup_info();
 	}
+	void show_cup_info() {
+		TCup* cup_pnt = cups_pnt[cupID];
+		std::string info = cup_pnt->info(cupID);
+
+		String^ info_cli = gcnew String(info.c_str());
+		MessageBox::Show(info_cli, "Program kalkulator", MessageBoxButtons::OK, MessageBoxIcon::Information);
+
+	}
 	private: System::Void menuStrip1_ItemClicked(System::Object^ sender, System::Windows::Forms::ToolStripItemClickedEventArgs^ e) {
 	}
 	private: System::Void zamknijToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -380,32 +388,32 @@ namespace POiIOkubeczki {
 			Application::Exit();
 		}
 	}
-private: System::Void oAutorzeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-	OAutorze^ autor_info = gcnew OAutorze();
-	autor_info->Show();
-}
-private: System::Void dodajKubekToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-	addTCup();
-	addCup();
-	addLblCup();
-}
-private: System::Void selectCup(System::Object^ sender, System::EventArgs^ e) {
-	if (add_substance_active == false)
-	{
-		cleanLblCup();
-		Label^ lbl = (Label^)sender;
-		lbl->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
-		lbl->Font = gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(238));
-		lbl->ForeColor = System::Drawing::Color::FromArgb(255, 0, 0);
-
-		getCupID(lbl);
-		delCupMenuItem->Enabled = true;
-		delCupMenuItem->Text = L"Usuñ kubek #" + Convert::ToString(cupID);
-		addSubMenuItem->Enabled = true;
-		addSubMenuItem->Text = L"Dodaj substancje do kubka #" + Convert::ToString(cupID);
-		//cups[cupID]->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
+	private: System::Void oAutorzeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+		OAutorze^ autor_info = gcnew OAutorze();
+		autor_info->Show();
 	}
-}
+	private: System::Void dodajKubekToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+		addTCup();
+		addCup();
+		addLblCup();
+	}
+	private: System::Void selectCup(System::Object^ sender, System::EventArgs^ e) {
+		if (add_substance_active == false)
+		{
+			cleanLblCup();
+			Label^ lbl = (Label^)sender;
+			lbl->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
+			lbl->Font = gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(238));
+			lbl->ForeColor = System::Drawing::Color::FromArgb(255, 0, 0);
+				
+			getCupID(lbl);
+			delCupMenuItem->Enabled = true;
+			delCupMenuItem->Text = L"Usuñ kubek #" + Convert::ToString(cupID);
+			addSubMenuItem->Enabled = true;
+			addSubMenuItem->Text = L"Dodaj substancje do kubka #" + Convert::ToString(cupID);
+			//cups[cupID]->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
+		}
+	}
 
 private: System::Void MainWin_Click(System::Object^ sender, System::EventArgs^ e) {
 	if (add_substance_active == false) cleanLblCup();
@@ -455,33 +463,31 @@ private: System::Void anuluj_Click(System::Object^ sender, System::EventArgs^ e)
 	add_substance_active = false;
 	menuStrip1->Enabled = true;
 }
-private: System::Void wlej_Click(System::Object^ sender, System::EventArgs^ e) {
-	String^ text = subMl->Text;
-	int vol = 0;
-	try {
-		vol = Convert::ToInt32(text);
-		int num = Convert::ToInt32(text);
-		int index = subList->SelectedIndex;
+	private: System::Void wlej_Click(System::Object^ sender, System::EventArgs^ e) {
+		String^ text = subMl->Text;
+		int vol = 0;
+		try {
+			vol = Convert::ToInt32(text);
+			//int num = Convert::ToInt32(text);
+			int index = subList->SelectedIndex;
 
-		if (index >= 0){
-			add_substance_to_cup(vol);
+			if (index >= 0){
+				add_substance_to_cup(vol);
 
-			cleanLblCup();
-			add_substance_active = false;
-			menuStrip1->Enabled = true;
-			//MessageBox::Show("Poprawne dane", "Program kalkulator", MessageBoxButtons::OK, MessageBoxIcon::Information);
-			cleanLblCup();
-			add_substance_active = false;
-			menuStrip1->Enabled = true;
+				cleanLblCup();
+				add_substance_active = false;
+				menuStrip1->Enabled = true;
+				//MessageBox::Show("Poprawne dane", "Program kalkulator", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			}
+			else {
+				MessageBox::Show("Wybierz ciecz do dolania!", "Program kalkulator", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			}
 		}
-		else {
-			MessageBox::Show("Wybierz ciecz do dolania!", "Program kalkulator", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		catch (...) {
+			MessageBox::Show("WprowadŸ liczbê","Program kalkulator", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			subMl->Text = "";
 		}
 	}
-	catch (...) {
-		MessageBox::Show("WprowadŸ liczbê","Program kalkulator", MessageBoxButtons::OK, MessageBoxIcon::Error);
-		subMl->Text = "";
-	}
-}
+
 };
 }

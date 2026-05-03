@@ -12,6 +12,7 @@ public:
 	void add(TSubstance substance, double volume_in_ml);
 	void add(std::string name, double volume_in_ml);
 	void show();
+	std::string info(int cupID);
 	void desired_vol_percentage(std::string name, double vol_percentage);
 	void desired_mass_percentage(std::string name, double mass_percentage);
 	void spill(TCup* cup);
