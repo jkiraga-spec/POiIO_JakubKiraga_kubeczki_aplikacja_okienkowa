@@ -21,6 +21,7 @@ namespace POiIOkubeczki {
 	private:
 		Generic::List<PictureBox^>^ cups = gcnew Generic::List<PictureBox^>();
 		Generic::List<Label^>^ lbl_cups = gcnew Generic::List<Label^>();
+		Generic::List<Label^>^ lbl_subs = gcnew Generic::List<Label^>();
 		int cupID = -1;
 		bool add_substance_active = false;
 	private: System::Windows::Forms::ComboBox^ subList;
@@ -473,6 +474,8 @@ private: System::Void anuluj_Click(System::Object^ sender, System::EventArgs^ e)
 
 			if (index >= 0){
 				add_substance_to_cup(vol);
+				erase_cup_substances();
+				draw_cup_substances();
 
 				cleanLblCup();
 				add_substance_active = false;
@@ -489,5 +492,52 @@ private: System::Void anuluj_Click(System::Object^ sender, System::EventArgs^ e)
 		}
 	}
 
+		   void draw_cup_substances()
+		   {
+			   TCup* cup_pnt = cups_pnt[cupID];
+			   std::vector<TSubstance> subs = cup_pnt->get_cup_substacnes();
+			   std::vector<double> vols = cup_pnt->get_cup_volumes();
+
+			   int vol_in_cup = 0;
+
+			   for (int i = 0; i < vols.size(); i++) {
+				   TSubstance sub = subs[i];
+				   std::string name = sub.get_name();
+				   int vol = vols[i] * 1e6;
+				   std::vector<int>color_rgb = sub.get_color();
+				   String^ name_cli = gcnew String(name.c_str());
+				   name_cli += L": " + Convert::ToString(vol) + L" ml";
+
+				   Label^ cup_substance = (gcnew System::Windows::Forms::Label());
+				   cup_substance->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+				   cup_substance->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+
+				   cup_substance->Size = System::Drawing::Size(199-12, vol);
+				   cup_substance->Location = System::Drawing::Point(12+6 + (10 + 199) * cupID, 238 - vol_in_cup - vol);
+				   cup_substance->Tag = Convert::ToString(cupID);
+				   cup_substance->Text = name_cli;
+				   cup_substance->BackColor = Color::FromArgb(color_rgb[0], color_rgb[1], color_rgb[2]);
+				   cup_substance->ForeColor = Color::FromArgb(255 - color_rgb[0], 255 - color_rgb[1], 255 - color_rgb[2]);
+
+				   cup_substance->BringToFront();
+				   this->Controls->Add(cup_substance);
+				   lbl_subs->Add(cup_substance);
+				   vol_in_cup += vol;
+			   }
+
+			   cups[cupID]->SendToBack();
+
+	}
+
+		   void erase_cup_substances() {
+			   for each (Label ^ sub in lbl_subs) {
+				   if (sub && (Convert::ToInt16(sub->Tag) == cupID))
+				   {
+					   Controls->Remove(sub);
+					   sub = nullptr;
+					   delete sub;
+				   }
+			   }
+		   }
 };
 }

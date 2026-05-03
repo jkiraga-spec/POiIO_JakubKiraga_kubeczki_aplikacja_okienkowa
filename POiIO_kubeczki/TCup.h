@@ -18,6 +18,13 @@ public:
 	void spill(TCup* cup);
 	void set_volume(double new_cup_volume);
 
+	std::vector<TSubstance> get_cup_substacnes() { 
+		return substances; 
+	}
+	std::vector<double> get_cup_volumes() {
+		return volumes;
+	}
+
 private:
 	void print_coe_vol();
 	void print_coe_mass();
