@@ -17,6 +17,7 @@ public:
 	void desired_mass_percentage(std::string name, double mass_percentage);
 	void spill(TCup* cup);
 	void set_volume(double new_cup_volume);
+	int get_substance_id(std::string name);
 
 	std::vector<TSubstance> get_cup_substacnes() { 
 		return substances; 
@@ -29,7 +30,7 @@ private:
 	void print_coe_vol();
 	void print_coe_mass();
 	int reduce_repeatitons(TSubstance substance);
-	int get_substance_id(std::string name);
+	
 };
 extern std::vector<TCup*> cups_pnt;
 
