@@ -303,7 +303,7 @@ namespace POiIOkubeczki {
 	private: Void addLblCup() {
 		Label^ lbl = (gcnew System::Windows::Forms::Label());
 		lbl->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-		lbl->Size = Drawing::Size(199, 22);
+		lbl->Size = Drawing::Size(199, 27);
 		lbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 
 		lbl->Location = System::Drawing::Point(12 + (10 + 199) * lbl_cups->Count, 243);
@@ -515,7 +515,7 @@ namespace POiIOkubeczki {
 				   TSubstance sub = subs[i];
 				   std::string name = sub.get_name();
 				   int vol = vols[i] * 1e6;
-				   std::vector<int>color_rgb = sub.get_color();
+				   std::vector<int> color_rgb = sub.get_color();
 				   String^ name_cli = gcnew String(name.c_str());
 				   name_cli += L": " + Convert::ToString(vol) + L" ml";
 
@@ -523,8 +523,10 @@ namespace POiIOkubeczki {
 				   cup_substance->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 				   cup_substance->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 
-				   cup_substance->Size = System::Drawing::Size(199-12, vol);
-				   cup_substance->Location = System::Drawing::Point(12+6 + (10 + 199) * cupID, 238 - vol_in_cup - vol);
+				   cup_substance->Size = System::Drawing::Size(199 - 12, vol);
+
+				   Point scroll = this->AutoScrollPosition;
+				   cup_substance->Location = System::Drawing::Point(12+6 + ((10 + 199) * cupID) + scroll.X, 238 - vol_in_cup - vol + scroll.Y);
 				   cup_substance->Tag = Convert::ToString(cupID);
 				   cup_substance->Text = name_cli;
 				   cup_substance->BackColor = Color::FromArgb(color_rgb[0], color_rgb[1], color_rgb[2]);
@@ -551,9 +553,9 @@ namespace POiIOkubeczki {
 			   }
 		   }
 	private: System::Void MainWin_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
-		if (e->KeyCode == Keys::Add)
+		if (e->KeyCode == Keys::Add || e->KeyCode == Keys::Oemplus && e->Shift)
 		{
-			if (cupID == -1) add_sub_gui();
+			if (cupID == -1) add_cup_gui();
 			else add_sub_gui();
 		}
 		if ((e->KeyCode >= Keys::D0) && (e->KeyCode <= Keys::D9))

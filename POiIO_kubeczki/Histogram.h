@@ -89,7 +89,7 @@ namespace POiIOkubeczki {
 			chart1->Series->Add(series);
 		}
 		private: System::Void Histogram_Load(System::Object^ sender, System::EventArgs^ e) {
-			test();
+			update_subs_hist();
 		}
 		private: Void test()
 		{
@@ -102,15 +102,16 @@ namespace POiIOkubeczki {
 
 			chart1->Invalidate();
 		}
-			   /*
+			   
 		private: Void update_subs_hist()
 		{
 			chart1->Series["Dane"]->Points->Clear();
 
-			std::vector<std::string> sub_names;
+			std::vector<std::string> subs_name;
 			std::vector<int> vols;
 			std::vector<std::vector<int>> colors;
-			get_hist_data(&sub_names, &vols, &colors);
+			get_hist_data(&subs_name, &vols, &colors);
+
 
 			for (int i = 0; i < vols.size(); i++)
 			{
@@ -123,27 +124,35 @@ namespace POiIOkubeczki {
 			   private: void get_hist_data(std::vector<std::string>* subs_name, std::vector<int>* vols, std::vector<std::vector<int>>* colors)
 			   {
 				   int cup_count = cups_pnt.size();
-					int subs_count = substance_menu.size();
+					int subs_count = substancje.size();
 
 				   for (int i_sub = 0; i_sub < subs_count; i_sub++)
 				   {
-					   std::string name = substance_menu[i_sub].get_name();
-					   std::vector<int> color = substance_menu[i_sub].get_color();
+					   std::string name = substancje[i_sub].get_name();
+					   std::vector<int> color = substancje[i_sub].get_color();
 					   (*subs_name).push_back(name);
 					   (*vols).push_back(0);
 					   (*colors).push_back(color);
 
-					   for (int i_cup = 0; i_cup < subs_count; i_cup++)
+					   
+					   for (int i_cup = 0; i_cup < cup_count; i_cup++)
 					   {
-						   int _id_in_cup = cups_pnt[i_cup]->get_substance_id(name);
-						   if (_id_in_cup >= 0)
-						   {
-							   std::vector<double> cup_vols = cups_pnt[i_cup]->get_cup_volumes();
-							   (*vols)[i_sub] += cup_vols[_id_in_cup] * 1e6;
-						   }
+						   std::vector<TSubstance> subs_in_cup = cups_pnt[i_cup]->get_cup_substacnes();
+						   int subs_in_cup_count = subs_in_cup.size();
+
+							   for (int i_sc=0; i_sc < subs_in_cup_count; i_sc++)
+							   {
+								   
+								   if (name == subs_in_cup[i_sc].get_name())
+								   {
+									   std::vector<double> cup_vols = cups_pnt[i_cup]->get_cup_volumes();
+									   (*vols)[i_sub] +=  cup_vols[i_sc] * 1e6;
+								   }
+							   }
 					   }
+					   
 				   }
 			   }
-			   */
+			   
 	};
 }
