@@ -3,27 +3,40 @@
 
 using namespace std;
 vector<TCup*> cups_pnt;
-void TCup::add(TSubstance substance, double  volume_in_ml)
+int TCup::add(TSubstance substance, double  volume_in_ml)
 {
-	int id_rep = reduce_repeatitons(substance);
-	if (id_rep == -1)
+	int status = 0;
+
+	string new_name = substance.get_name();
+	int substance_pos_in_cup = get_substance_id(new_name);
+
+	if (substance_pos_in_cup == -1)
 	{
 		substances.push_back(substance);
 		volumes.push_back(volume_in_ml / 1e6);
+		status = 1;
 	}
-	else
-	{
-		volumes[id_rep] += volume_in_ml / 1e6;
+	else {
+		this->volumes[substance_pos_in_cup] += volume_in_ml / 1e6;
+		status = 2;
 	}
+	return status;
 }
 
-void TCup::add(std::string name, double volume_in_ml)
+int TCup::add(std::string name, double volume_in_ml)
 {
+	int status = 0;
+
 	int _id = get_substance_id(name);
+
 	if (_id >= 0)
 	{
-		this->add(substancje[_id], volume_in_ml);
+		status = this->add(substancje[_id], volume_in_ml);
 	}
+	else {
+		status = -1;
+	}
+	return status;
 }
 
 
@@ -39,18 +52,26 @@ int TCup::get_substance_id(string name)
 		string sub_name = substancje[_id].get_name();
 
 		if (sub_name == name) run = false;
-
+		/*
 		if ((_id + 1 == count) && (run == true))
 		{
 			cout << "Nie znaleziono plynu o podanej nazwie: \"" << name << "\"!\n";
 			run = false;
 			_id = -1;
 		}
+		*/
 	}
 	return _id;
 }
-
-
+std::vector<TSubstance> TCup::get_cup_substances()
+{
+	return substances;
+}
+std::vector<double> TCup::get_cup_volumes()
+{
+	return volumes;
+}
+/*
 void TCup::show()
 {
 	int count = substances.size();
@@ -87,7 +108,8 @@ void TCup::show()
 	}
 }
 
-
+*/
+/*
 void TCup::print_coe_vol()
 {
 	int count = substances.size();
@@ -122,10 +144,10 @@ void TCup::print_coe_mass()
 		cout << 100 * volumes[i] * substances[i].get_ro() * 1000 / mass_total << " - ";
 
 	}
-	cout << "\n" << endl;
+	cout << "\n";
 }
-
-
+*/
+/*
 int TCup::reduce_repeatitons(TSubstance substance)
 {
 	int count = substances.size();
@@ -257,3 +279,4 @@ void TCup::set_volume(double new_cup_volume)
 		cup_volume = new_cup_volume;
 	}
 }
+*/
