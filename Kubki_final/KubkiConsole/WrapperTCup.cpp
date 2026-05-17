@@ -17,17 +17,19 @@ void WrapperTCup::add(TSubstance substance, double volume_in_ml)
 	string name = substance.get_name();
 	this->print_add_status(name, status, volume_in_ml);
 }
+
 void WrapperTCup::add(std::string name, double volume_in_ml)
 {
 	int status = cup->add(name, volume_in_ml);
 	this->print_add_status(name, status, volume_in_ml);
 }
+
 void WrapperTCup::print_add_status(string name, int status, double vol)
 {
 	switch (status)
 	{
 	case -1:
-		cout << "Nieznana substanca: " << name << endl;
+		cout << "Nieznana substancja: " << name << endl;
 		break;
 	case 1:
 		cout << "Dodano nowa substancje do kubka \"" << name << "\"";

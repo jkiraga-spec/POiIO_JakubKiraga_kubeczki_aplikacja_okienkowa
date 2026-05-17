@@ -1,5 +1,5 @@
 #pragma once
-#include <iostream>
+//#include <iostream>
 #include <vector>
 #include "TSubstance.h"
 class TCup
@@ -11,8 +11,12 @@ class TCup
 public:
 	int add(TSubstance substance, double volume_in_ml);
 	int add(std::string name, double volume_in_ml);
-	std::vector<TSubstance> get_cup_substances();
-	std::vector<double> get_cup_volumes();
+	std::vector<double> get_cup_volumes() {
+		return volumes;
+	}
+	std::vector<TSubstance> get_cup_substances() {
+		return substances;
+	}
 	//void show();
 	//void desired_vol_percentage(std::string name, double vol_percentage);
 	//void desired_mass_percentage(std::string name, double mass_percentage);
@@ -23,7 +27,6 @@ private:
 	//void print_coe_vol();
 	//void print_coe_mass();
 	//int reduce_repeatitons(TSubstance substance);
-	int get_substance_id(std::string name);
+	int get_substance_id(std::vector<TSubstance>* lista_substancji, std::string name);
 };
 extern std::vector<TCup*> cups_pnt;
-
