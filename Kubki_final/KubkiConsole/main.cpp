@@ -9,8 +9,8 @@ using namespace std;
 
 	//cout<<"Hello World!\n";
 int main() {
-	TCup kubek1;
-	TCup kubek2;
+	WrapperTCup kubek1;
+	WrapperTCup kubek2;
 	kubek1.add(substancje[0], 100);
 	kubek1.add("woda", 30);
 	kubek1.add("mleko", 50);
